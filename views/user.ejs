@@ -1,0 +1,179 @@
+ <!DOCTYPE html>	
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>VX_TIMEREPORT</h1>
+
+  <form method="POST" action="/users">
+
+
+
+    <% if(view==1){ %>
+    	<h2>ユーザ詳細</h2>
+    <% }else if(view==2){ %>
+	<h2>ユーザ編集</h2>
+    <% }else{ %>
+	<h2>ユーザ追加</h2>
+    <% } %>
+	<h3><%= msg %></h3>
+
+
+<div class="a-box">
+
+	<table border="1">
+	<tr>
+	<th>社員番号</th>
+	<% if(view==3){ %>
+		<td><input type="text" name="txt_hrid" size="50" value=<%= hrid %>></td>
+	<% }else{ %>
+	<td><%= hrid %></td>
+	<% } %>
+	</tr>
+	<tr>
+	<th>社員名</th>
+	<% if(view==1){ %>
+		<td><%= name %></td>
+	<% }else{ %>
+		<td><input type="text" name="txt_name" size="50" value=<%= name %>></td>
+	<% } %>
+	</tr>
+	<tr>
+	<th>アカウント</th>
+	<% if(view==1){ %>
+		<td><%= domainname %></td>
+	<% }else{ %>
+		<td><input type="text" name="txt_domainname" size="50" value=<%= domainname %>></td>
+	<% } %>
+	</tr>
+	<tr>
+	<th>表示</th>
+	<% if(view==1){ %>
+		<% if(visible==1){ %>
+			<td>☓</td>
+		<% }else{ %>
+			<td>◯</td>
+		<% } %>
+	<% }else{ %>
+		<td><SELECT name="cmb_visible">
+		<% if(visible==1){ %>
+			<OPTION value="0">◯</OPTION>
+			<OPTION value="1" selected>☓</OPTION>
+		<% }else{ %>
+			<OPTION value="0" selected>◯</OPTION>
+			<OPTION value="1">☓</OPTION>
+		<% } %>
+		</SELECT></td>
+	<% } %>
+	</tr></table>
+
+	<% if(view==1){ %>
+ 		<input type="submit" name="cmd_edit" value="編集">
+		<input type="submit" name="cmd_exit" value="終了" onClick="window.close()">
+	<% }else if(view==2){ %>
+		<input type="submit" name="cmd_update" value="更新">
+		<input type="submit" name="cmd_return" value="戻る">
+	<% }else{ %>
+		<input type="submit" name="cmd_insert" value="追加">
+		<input type="submit" name="cmd_exit" value="終了" onClick="window.close()">
+	<% } %>
+
+  </div>
+
+
+<div class="b-box">
+
+	<% if(view!=3){ %>
+	<table border="1">
+	<tr colspan=6>
+	<th>TR申請年月</th>
+	<td><SELECT name="cmb_trDate">
+	<% var y = nowDate.substring(0,4); %>
+	<% var m = nowDate.substring(5,6); %>
+	<OPTION value= 0 selected><%= y %>年<%= m %>月</OPTION>
+	<% for (var i=1 ; i <= 5 ; i++){ %>
+	<% if(m=="1"){m="12";y--;}else{m--} %>
+	<OPTION value= i><%= y %>年<%= m %>月</OPTION>
+	<% } %>
+	</SELECT>
+	</td>
+	</tr>
+	<tr><th colspan=6>TR申請内容</th></tr>
+	<tr><th colspan=6>休日出勤申請</th></tr>
+	<% console.log(kyushutsuStr) %>
+	<% var kyushutsuArray = new Array(); %>
+	<% kyushutsuArray = kyushutsuStr.split(","); %>
+	<% for (var i in kyushutsuArray){ %>
+	<% console.log(i) %>
+	<% var kyArray = new Array(); %>
+	<% kyArray = kyushutsuArray[i].split(";"); %>
+	<% if(kyArray[0].length!=0){ %>
+	<tr><th>対象日</th><td><%= kyArray[2] %></td><th>ワークフロー番号</th><td><%= kyArray[0] %></td><th>振替休日取得日</th><td><%= kyArray[1] %></td></tr>
+	<% } %>
+	<% } %>
+	<tr><th colspan=6><input type="submit" name="cmd_kyadd" value="追加"></th></tr>
+	<tr><th colspan=6>振替休日申請</th></tr>
+	<% var furikaeArray = new Array(); %>
+	<% furikaeArray = furikaeStr.split(","); %>
+	<% for (var i in furikaeArray){ %>
+	<% var frArray = new Array(); %>
+	<% frArray = furikaeArray[i].split(";"); %>
+	<% if(frArray[0].length!=0){ %>
+	<tr><th>対象日</th><td><%= frArray[2] %></td><th>ワークフロー番号</th><td><%= frArray[0] %></td><th>休日出勤日</th><td><%= frArray[1] %></td></tr>
+	<% } %>
+	<% } %>
+	<tr><th colspan=6><input type="submit" name="cmd_fradd" value="追加"></th></tr>
+	<tr><th colspan=6>有給休暇申請</th></tr>
+	<% var yukyuArray = new Array(); %>
+	<% yukyuArray = yukyuStr.split(","); %>
+	<% for (var i in yukyuArray){ %>
+	<% var ykArray = new Array(); %>
+	<% ykArray = yukyuArray[i].split(";"); %>
+	<% if(ykArray[0].length!=0){ %>
+	<tr><th>対象日</th><td><%= ykArray[1] %></td><th>ワークフロー番号</th><td><%= ykArray[0] %></td></tr>
+	<% } %>
+	<% } %>
+	<tr><th colspan=6><input type="submit" name="cmd_ykadd" value="追加"></th></tr>
+	<tr><th colspan=6>特別休暇申請</th></tr>
+	<% var tokukyuArray = new Array(); %>
+	<% tokukyuArray = tokukyuStr.split(","); %>
+	<% for (var i in tokukyuArray){ %>
+	<% var tkArray = new Array(); %>
+	<% tkArray = tokukyuArray[i].split(";"); %>
+	<% if(tkArray[0].length!=0){ %>
+	<tr><th>対象日</th><td><%= tkArray[1] %></td><th>ワークフロー番号</th><td><%= tkArray[0] %></td></tr>
+	<% } %>
+	<% } %>
+	<tr><th colspan=6><input type="submit" name="cmd_tkadd" value="追加"></th></tr>
+	<tr><th colspan=6>欠勤申請</th></tr>
+	<% var kekkinArray = new Array(); %>
+	<% kekkinArray = kekkinStr.split(","); %>
+	<% for (var i in kekkinArray){ %>
+	<% var kkArray = new Array(); %>
+	<% kkArray = kekkinArray[i].split(";"); %>
+	<% if(kkArray[0].length!=0){ %>
+	<tr><th>対象日</th><td><%= kkArray[1] %></td><th>ワークフロー番号</th><td><%= kkArray[0] %></td></tr>
+	<% } %>
+	<% } %>
+	<tr><th colspan=6>深夜残業申請</th></tr>
+	<% var shinyaArray = new Array(); %>
+	<% shinyaArray = shinyaStr.split(","); %>
+	<% for (var i in shinyaArray){ %>
+	<% var syArray = new Array(); %>
+	<% syArray = shinyaArray[i].split(";"); %>
+	<% if(syArray[0].length!=0){ %>
+	<tr><th>対象日</th><td><%= syArray[2] %></td><th>ワークフロー番号</th><td><%= syArray[0] %></td><th>深夜残業時間</th><td><%= syArray[1] %></td></tr>
+	<% } %>
+	<% } %>
+	<tr><th colspan=6><input type="submit" name="cmd_syadd" value="追加"></th></tr>
+	</table>
+	<% } %>	
+</div>
+
+ </form>
+
+  </body>
+</html>
