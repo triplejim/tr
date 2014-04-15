@@ -6,7 +6,6 @@ var vi;
 var sql;
 var cn_str;
 var strSQL;
-var trArray = new Array;
 var wfno;
 var checkID; 
 var holidayWorkDate;
@@ -51,9 +50,8 @@ for(var i=0;i<rst.length;i++){
 	name = rst[i]['Name'];
 	dname = rst[i]['DomainName'];
 	vi = rst[i]['Visible'];
-	str = name + ";" + dname + ";" + vi;
 	
-};
+}
 
 if (err) {
 res.render('user', { title: 'ERROR' });
@@ -63,7 +61,7 @@ console.log(err);
 sql=require('node-sqlserver');
 cn_str="Driver={SQL Server Native Client 11.0};Server={(local)\\SQLEXPRESS};Database={timereport};Trusted_Connection={Yes}";
 strSQL="Select WFNo,CheckID,HolidayWorkDate,ExchangedHoliday,ShinyaZangyoTime,Year,Month,Day From T_TimeReportWF";
-strSQL =  strSQL + " Where HRID = '"+ id +"'"
+strSQL =  strSQL + " Where HRID = '"+ id +"'";
 
 
 kyushutsuStr="";
@@ -74,19 +72,19 @@ kekkinStr="";
 shinyaStr="";
 
 
-var query = sql.query(cn_str,strSQL,function(err,rst) {
+sql.query(cn_str,strSQL,function(err,rst) {
 
 
 for(var i=0;i<rst.length;i++){
 
-	 wfno = rst[i]['WFNo'].replace(/\s+$/, "");
-	 checkID = rst[i]['CheckID'];
-	 holidayWorkDate = rst[i]['HolidayWorkDate'].replace(/\s+$/, "");
-	 exchangedHoliday = rst[i]['ExchangedHoliday'].replace(/\s+$/, "");
-	 shinyaZangyoTime = rst[i]['ShinyaZangyoTime']
-	 year = rst[i]['Year'].replace(/\s+$/, "");
-	 month = rst[i]['Month'].replace(/\s+$/, "");
-	 day = rst[i]['Day'].replace(/\s+$/, "");
+    wfno = rst[i]['WFNo'].replace(/\s+$/, "");
+    checkID = rst[i]['CheckID'];
+    holidayWorkDate = rst[i]['HolidayWorkDate'].replace(/\s+$/, "");
+    exchangedHoliday = rst[i]['ExchangedHoliday'].replace(/\s+$/, "");
+    shinyaZangyoTime = rst[i]['ShinyaZangyoTime']
+    year = rst[i]['Year'].replace(/\s+$/, "");
+    month = rst[i]['Month'].replace(/\s+$/, "");
+    day = rst[i]['Day'].replace(/\s+$/, "");
 	
 	date = year + "/" + month + "/" + day; 
 	
@@ -112,7 +110,7 @@ for(var i=0;i<rst.length;i++){
 			shinyaStr += wfno + ";" + shinyaZangyoTime + ";" + date + ",";break;			
 	}
 
-};
+}
 
 
 kyushutsuStr = kyushutsuStr.substring(0,kyushutsuStr.length-1);
@@ -141,7 +139,7 @@ console.log(err);
 });
 	
 });
-};
+}
 
 };
 
@@ -167,11 +165,11 @@ name = req.body.txt_name;
 dname = req.body.txt_domainname;
 vi = req.body.cmb_visible;
 
-if(name.length==0){
+if(name.length===0){
 
 	res.render('user',{title:'ユーザ追加',hrid:id,name:name,domainname:dname,visible:vi,view:2,msg:'社員名を入力してください',nowDate:nowDate});
 
-}else if(dname.length==0){
+}else if(dname.length===0){
 
 	
 	res.render('user',{title:'ユーザ追加',hrid:id,name:name,domainname:dname,visible:vi,view:2,msg:'アカウントを入力してください',nowDate:nowDate});
@@ -179,8 +177,8 @@ if(name.length==0){
 }else{
 sql=require('node-sqlserver');
 cn_str="Driver={SQL Server Native Client 11.0};Server={(local)\\SQLEXPRESS};Database={timereport};Trusted_Connection={Yes}";
-strSQL="Update M_社員マスタ Set Name='"+ name +"',DomainName= '"+ dname +"',visible = "+ vi +""
-strSQL= strSQL + " Where HRID = '"+ id +"'"
+strSQL="Update M_社員マスタ Set Name='"+ name +"',DomainName= '"+ dname +"',visible = "+ vi +"";
+strSQL= strSQL + " Where HRID = '"+ id +"'";
 
 console.log(strSQL);
 
@@ -211,16 +209,16 @@ name = req.body.txt_name;
 dname = req.body.txt_domainname;
 vi = req.body.cmb_visible;
 
-if(id.length==0){
+if(id.length===0){
 
 	res.render('user',{title:'ユーザ追加',hrid:id,name:name,domainname:dname,visible:vi,view:3,msg:'社員番号を入力してください',nowDate:nowDate});
 
-}else if(name.length==0){
+}else if(name.length===0){
 
 	
 	res.render('user',{title:'ユーザ追加',hrid:id,name:name,domainname:dname,visible:vi,view:3,msg:'社員名を入力してください',nowDate:nowDate});
 
-}else if(dname.length==0){
+}else if(dname.length===0){
 
 	
 	res.render('user',{title:'ユーザ追加',hrid:id,name:name,domainname:dname,visible:vi,view:3,msg:'アカウントを入力してください',nowDate:nowDate});
@@ -245,6 +243,8 @@ shinyaStr:''
 });
 }
 }
+
+};
 
 function dateChange(dateStr){
 
@@ -271,4 +271,4 @@ function dateChange(dateStr){
 	
 	
 
-};
+}
